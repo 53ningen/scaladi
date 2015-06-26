@@ -13,6 +13,8 @@ class DefaultUserRepositoryTest extends org.specs2.mutable.Specification {
     }
 
     "change UserRepository implementation in runtime" in {
+      // DISettingModuleを作り込むことにより、
+      // 実行時に実装クラスの差し替えや実装クラスに与えるパラメータの差し替えなどがわりと柔軟にできる
       val injector = Guice.createInjector(new DISettingModule)
       val userRepository = injector.getInstance(classOf[UserRepository])
       userRepository.getUser mustEqual "mockmock"
@@ -27,6 +29,8 @@ class DefaultUserRepositoryTest extends org.specs2.mutable.Specification {
       // 実装に与えるパラメータを変えたりできる
       @Provides
       def getUserRepository: UserRepository = new MockUserRepository
+      // たとえばここを、乱数を発生させ奇数だったらDefault、
+      // 偶数だったらMockの実装を使うみたいな実装にすることができる
 
     }
 
